@@ -88,17 +88,20 @@ class Particle():
 
 
 
-def CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax):
+def CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax,beta):
     SetOfParticles = []
     for index in range(NumberOfParticles):
         X = round(np.random.uniform(Xmin, Xmax), 3)
         Y = round(np.random.uniform(Ymin, Ymax), 3)
         Point = {"X": X, "Y": Y}
-        SetOfParticles.append(Particle(Point))
+        SetOfParticles.append(Particle(Point,beta))
     return SetOfParticles
 
 def ComputeGravitationalConstant(G0,t0,beta,t):
-    return G0*((t0/t)**beta)
+    if t is 0:
+        return G0
+    else:
+        return G0*((t0/t)**beta)
 
 
 def CostFunction(X, Y):
@@ -134,8 +137,8 @@ def GravityMass(fi,fBest,fWorst):
 
 def InertialMass(Mi,SetOfParticles):
     SumOfGravityMasses=0
-    for Particle in SetOfParticles:
-        SumOfGravityMasses=SumOfGravityMasses+Particle.get_M()
+    for particle in SetOfParticles:
+        SumOfGravityMasses=SumOfGravityMasses+particle.get_M()
     mi=Mi/SumOfGravityMasses
     return mi
 
@@ -229,7 +232,7 @@ if __name__ == '__main__':
     IndexOfTheBestParticle=None
     IndexOfTheWorstParticle=None
     # Fireflies initialization
-    SetOfParticles = CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax)
+    SetOfParticles = CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax,beta)
     t = 0
     while t < TotalTime and len(SetOfParticles)>1:
         G = ComputeGravitationalConstant(Gt0, t0, beta, t)
