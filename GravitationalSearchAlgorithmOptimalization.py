@@ -105,11 +105,17 @@ def ComputeGravitationalConstant(G0,t0,beta,t):
 
 
 def CostFunction(X, Y):
-    return X ** 2 + Y ** 2
+    if X==None or Y==None:
+        return None
+    else:
+        return X ** 2 + Y ** 2
 
 def AdaptationFunction(CostFunction,beta):
-    result = beta * np.exp(-CostFunction)
-    return result
+    if CostFunction==None:
+        return None
+    else:
+        result = -beta *CostFunction
+        return result
 
 def SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Values"):
     TheBestValue=SetOfParticles[0].get_AdaptationFunctionValue()
@@ -132,53 +138,85 @@ def SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Val
     else:
         raise Exception("Unknown mode value!!!")
 
-def GravityMass(fi,fBest,fWorst):
-    return ((fi-fWorst)/(fBest-fWorst))
 
-def InertialMass(Mi,SetOfParticles):
+def ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst):
+    for particle in SetOfParticles:
+        fi=particle.get_AdaptationFunctionValue()
+        Mi = GravityMass(fi, fBest, fWorst)
+        particle.set_M(Mi)
+
+def GravityMass(fi,fBest,fWorst):
+    return 1000*((fi-fWorst)/(fBest-fWorst))
+
+def ComputeInertialMassesOfParticles(SetOfParticles):
     SumOfGravityMasses=0
     for particle in SetOfParticles:
         SumOfGravityMasses=SumOfGravityMasses+particle.get_M()
-    mi=Mi/SumOfGravityMasses
-    return mi
+    for particle in SetOfParticles:
+        mi = particle.get_M() / SumOfGravityMasses
+        particle.set_m(mi)
 
 def ComputeDistanceBeetweenTwoParticles(Particle_I, Particle_J):
-    X = Particle_J.get_X() - Particle_I.get_X()
-    Y = Particle_J.get_Y() - Particle_I.get_Y()
-    Rij = np.sqrt(X ** 2 + Y ** 2)
-    return Rij
+    if ((Particle_I.get_X()==None and Particle_I.get_Y()==None) or (Particle_J.get_X()==None and Particle_J.get_Y()==None)):
+        return None
+    else:
+        X = Particle_J.get_X() - Particle_I.get_X()
+        Y = Particle_J.get_Y() - Particle_I.get_Y()
+        Rij = np.sqrt(X ** 2 + Y ** 2)
+        return Rij
 
 def ComputeNetForcesForParticles(SetOfParticles,G,epsilon):
     for Particle_I in SetOfParticles:
-        FijX=0
-        FijY=0
-        alfa = round(np.random.uniform(0, 1), 3)
-        for Particle_J in SetOfParticles:
-            Rij=ComputeDistanceBeetweenTwoParticles(Particle_I,Particle_J)
-            FijX=FijX+G*((Particle_I.get_M()*Particle_J.get_M())/(Rij*epsilon))\
-                 *(Particle_J.get_X()-Particle_I.get_X())
-            FijY=FijY+G*((Particle_I.get_M()*Particle_J.get_M())/(Rij*epsilon))\
-                 *(Particle_J.get_Y()-Particle_I.get_Y())
-        Particle_I.set_Fg(alfa*FijX,alfa*FijY)
+        if Particle_I.get_M()==0:
+            Particle_I.set_Fg(None, None)
+        else:
+            FijX=0
+            FijY=0
+            alfa = round(np.random.uniform(0, 1), 3)
+            for Particle_J in SetOfParticles:
+                if Particle_J.get_M() != 0:
+                    if Particle_J is not Particle_I:
+                        Rij = ComputeDistanceBeetweenTwoParticles(Particle_I, Particle_J)
+                        FijX = FijX + G * ((Particle_I.get_M() * Particle_J.get_M()) / (Rij + epsilon)) \
+                               * (Particle_J.get_X() - Particle_I.get_X())
+                        FijY = FijY + G * ((Particle_I.get_M() * Particle_J.get_M()) / (Rij + epsilon)) \
+                               * (Particle_J.get_Y() - Particle_I.get_Y())
+
+            Particle_I.set_Fg(alfa*FijX,alfa*FijY)
+            print('o')
 
 def ComputeAccelerationsForParticles(SetOfParticles):
     for Particle_I in SetOfParticles:
-        aix=Particle_I.get_Fgx()/Particle_I.get_m()
-        aiy=Particle_I.get_Fgy()/Particle_I.get_m()
-        Particle_I.set_a(aix,aiy)
+        if Particle_I.get_m()==0:
+            Particle_I.set_a(None, None)
+        else:
+            aix = Particle_I.get_Fgx() / Particle_I.get_m()
+            aiy = Particle_I.get_Fgy() / Particle_I.get_m()
+            Particle_I.set_a(aix, aiy)
+            print('o')
+
 
 def ComputeVelocityForParticles(SetOfParticles):
     for Particle_I in SetOfParticles:
-        alfa=round(np.random.uniform(0,1), 3)
-        vix=alfa*Particle_I.get_Vx()+Particle_I.get_ax()
-        viy=alfa*Particle_I.get_Vy()+Particle_I.get_ay()
-        Particle_I.set_V(vix,viy)
+        if (Particle_I.get_ax()==None) and (Particle_I.get_ay()==None):
+            Particle_I.set_V(None, None)
+        else:
+            alfa=round(np.random.uniform(0,1), 3)
+            vix=alfa*Particle_I.get_Vx()+Particle_I.get_ax()
+            viy=alfa*Particle_I.get_Vy()+Particle_I.get_ay()
+            Particle_I.set_V(vix,viy)
+            print('o')
 
 def ComputeCordinatesForParticles(SetOfParticles):
     for Particle_I in SetOfParticles:
-        x=Particle_I.get_X()+Particle_I.get_Vx
-        y=Particle_I.get_Y()+Particle_I.get_Vy
-        Particle_I.set_Point(x,y)
+        if (Particle_I.get_Vx()==None) and (Particle_I.get_Vy()==None):
+            Particle_I.set_Point(None, None)
+        else:
+            x = Particle_I.get_X() + Particle_I.get_Vx()
+            y = Particle_I.get_Y() + Particle_I.get_Vy()
+            Particle_I.set_Point(x, y)
+            print('o')
+
 
 def plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles):
     fig = plt.figure()
@@ -210,12 +248,12 @@ if __name__ == '__main__':
 
     '''
 
-    NumberOfParticles = 20
+    NumberOfParticles = 3
     TotalTime=20
-    Gt0=10000
+    Gt0=0.0001
     t0=1
     beta=0.98
-    epsilon=10
+    epsilon=1000
     '''
             Set dimentions of 3D plot, such as:
                Xmin,Xmax,Ymin,Ymax
@@ -238,21 +276,31 @@ if __name__ == '__main__':
         G = ComputeGravitationalConstant(Gt0, t0, beta, t)
         for i in range(NumberOfParticles):
             fBest, fWorst = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Values")
-            fi=SetOfParticles[i].get_AdaptationFunctionValue()
-            Mi=GravityMass(fi,fBest,fWorst)
-            SetOfParticles[i].set_M(Mi)
-            mi=InertialMass(Mi,SetOfParticles)
-            SetOfParticles[i].set_m(mi)
+            ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst)
+            ComputeInertialMassesOfParticles(SetOfParticles)
             ComputeNetForcesForParticles(SetOfParticles,G,epsilon)
             ComputeAccelerationsForParticles(SetOfParticles)
+            ComputeVelocityForParticles(SetOfParticles)
+            Xprev = SetOfParticles[i].get_X()
+            Yprev = SetOfParticles[i].get_Y()
+
             ComputeCordinatesForParticles(SetOfParticles)
+
+            Mprev = SetOfParticles[i].get_M()
+            prev_adapt_value = SetOfParticles[i].get_AdaptationFunctionValue()
             SetOfParticles[i].AdaptationFunctionAndCostFunctionValueSet\
                 (SetOfParticles[i].get_X(),SetOfParticles[i].get_Y(),beta)
+            adapt_value=SetOfParticles[i].get_AdaptationFunctionValue()
 
+        '''
+        Make function which eliminates unnecessary Particle
+        '''
+
+        fBest,fWorst=SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Values")
         IndexOfTheBestParticle, IndexOfTheWorstParticle = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Indexes")
         t = t + 1
-        plt.interactive(False)
-        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles)
+    #    plt.interactive(False)
+     #   plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles)
 
     print("Xmin: ", fBest.get_X())
     print("Ymin: ", fBest.get_Y())
