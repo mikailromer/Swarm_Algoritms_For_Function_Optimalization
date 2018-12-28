@@ -54,6 +54,8 @@ class Particle():
     def get_AdaptationFunctionValue(self):
         return self.__AdaptationFunctionValue
 
+
+
     def AdaptationFunctionAndCostFunctionValueSet(self,X,Y,beta):
         self.__Z=CostFunction(X,Y)
         self.__AdaptationFunctionValue = AdaptationFunction(self.get_Z(), beta)
@@ -103,9 +105,11 @@ def ComputeGravitationalConstant(G0,t0,beta,t):
     else:
         return G0*((t0/t)**beta)
 
+def CostFunctionForPlot(X, Y):
+    return X ** 2 + Y ** 2
 
 def CostFunction(X, Y):
-    if X==None or Y==None:
+    if (X==None or Y==None):
         return None
     else:
         return X ** 2 + Y ** 2
@@ -117,26 +121,26 @@ def AdaptationFunction(CostFunction,beta):
         result = -beta *CostFunction
         return result
 
-def SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Values"):
+def SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles):
     TheBestValue=SetOfParticles[0].get_AdaptationFunctionValue()
     TheWorstValue=SetOfParticles[0].get_AdaptationFunctionValue()
-    IndexOfTheBestParticle=None
-    IndexOfTheWorstParticle=None
+    IndexOfTheBestParticle=0
+    IndexOfTheWorstParticle=0
     index=0
-    for Particle in SetOfParticles:
-        if Particle.get_AdaptationFunctionValue()>TheBestValue:
-            TheBestValue=Particle.get_AdaptationFunctionValue()
-            IndexOfTheBestParticle=index
-        if Particle.get_AdaptationFunctionValue()<TheWorstValue:
-            TheWorstValue=Particle.get_AdaptationFunctionValue()
-            IndexOfTheWorstParticle=index
-        index=index+1
-    if mode=="Indexes":
-        return IndexOfTheBestParticle, IndexOfTheWorstParticle
-    elif mode=="Values":
-        return TheBestValue, TheWorstValue,
+    if len(SetOfParticles)<=1:
+        return TheBestValue, TheWorstValue, IndexOfTheBestParticle, IndexOfTheWorstParticle
     else:
-        raise Exception("Unknown mode value!!!")
+        for Particle in SetOfParticles:
+            if Particle.get_AdaptationFunctionValue()>TheBestValue:
+                TheBestValue=Particle.get_AdaptationFunctionValue()
+                IndexOfTheBestParticle=index
+            if Particle.get_AdaptationFunctionValue()<TheWorstValue:
+                TheWorstValue=Particle.get_AdaptationFunctionValue()
+                IndexOfTheWorstParticle=index
+            index=index+1
+        return TheBestValue,TheWorstValue,IndexOfTheBestParticle,IndexOfTheWorstParticle
+
+
 
 
 def ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst):
@@ -218,6 +222,12 @@ def ComputeCordinatesForParticles(SetOfParticles):
             print('o')
 
 
+def ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,beta):
+    #self.__Z=CostFunction(X,Y)
+    #self.__AdaptationFunctionValue = AdaptationFunction(self.get_Z(), beta)
+    for particle in SetOfParticles:
+        particle.AdaptationFunctionAndCostFunctionValueSet(particle.get_X(),particle.get_Y(),beta)
+
 def plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles):
     fig = plt.figure()
     PositionsOfParticlesIn_Xaxis = []
@@ -232,7 +242,7 @@ def plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles):
     X = np.arange(Xmin, Xmax, 1)
     Y = np.arange(Ymin, Ymax, 1)
     X, Y = np.meshgrid(X, Y)
-    Z = CostFunction(X, Y)
+    Z = CostFunctionForPlot(X, Y)
     ax.plot_wireframe(X, Y, Z, rstride=1, cstride=1)
     ax.scatter(PositionsOfParticlesIn_Xaxis, PositionsOfParticlesIn_Yaxis, PositionsOfParticlesIn_Zaxis, c='r',
                marker='o')
@@ -248,12 +258,12 @@ if __name__ == '__main__':
 
     '''
 
-    NumberOfParticles = 3
-    TotalTime=20
+    NumberOfParticles = 12
+    TotalTime=30
     Gt0=0.0001
     t0=1
     beta=0.98
-    epsilon=1000
+    epsilon=8000
     '''
             Set dimentions of 3D plot, such as:
                Xmin,Xmax,Ymin,Ymax
@@ -274,33 +284,30 @@ if __name__ == '__main__':
     t = 0
     while t < TotalTime and len(SetOfParticles)>1:
         G = ComputeGravitationalConstant(Gt0, t0, beta, t)
-        for i in range(NumberOfParticles):
-            fBest, fWorst = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Values")
-            ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst)
-            ComputeInertialMassesOfParticles(SetOfParticles)
-            ComputeNetForcesForParticles(SetOfParticles,G,epsilon)
-            ComputeAccelerationsForParticles(SetOfParticles)
-            ComputeVelocityForParticles(SetOfParticles)
-            Xprev = SetOfParticles[i].get_X()
-            Yprev = SetOfParticles[i].get_Y()
-
-            ComputeCordinatesForParticles(SetOfParticles)
-
-            Mprev = SetOfParticles[i].get_M()
-            prev_adapt_value = SetOfParticles[i].get_AdaptationFunctionValue()
-            SetOfParticles[i].AdaptationFunctionAndCostFunctionValueSet\
-                (SetOfParticles[i].get_X(),SetOfParticles[i].get_Y(),beta)
-            adapt_value=SetOfParticles[i].get_AdaptationFunctionValue()
-
-        '''
-        Make function which eliminates unnecessary Particle
-        '''
-
-        fBest,fWorst=SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Values")
-        IndexOfTheBestParticle, IndexOfTheWorstParticle = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles,mode="Indexes")
+      #  indeks=3
+        fBest, fWorst,IndexOfTheBestParticle,IndexOfTheWorstParticle = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles)
+        ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst)
+        ComputeInertialMassesOfParticles(SetOfParticles)
+ #       prev_Fx = SetOfParticles[indeks].get_Fgx()
+  #      prev_Fy = SetOfParticles[indeks].get_Fgy()
+        ComputeNetForcesForParticles(SetOfParticles,G,epsilon)
+   #     prev_ax = SetOfParticles[indeks].get_ax()
+    #    prev_ay = SetOfParticles[indeks].get_ay()
+        ComputeAccelerationsForParticles(SetOfParticles)
+     #   prev_Vx = SetOfParticles[indeks].get_Vx()
+      #  prev_Vy = SetOfParticles[indeks].get_Vy()
+        ComputeVelocityForParticles(SetOfParticles)
+    #    prev_x=SetOfParticles[indeks].get_X()
+     #   prev_y=SetOfParticles[indeks].get_Y()
+        ComputeCordinatesForParticles(SetOfParticles)
+        ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,beta)
+        removedParticle=SetOfParticles.pop(IndexOfTheWorstParticle)
+        fBest,fWorst,IndexOfTheBestParticle,IndexOfTheWorstParticle=\
+            SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles)
         t = t + 1
-    #    plt.interactive(False)
-     #   plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles)
+        BestParticle=SetOfParticles[IndexOfTheBestParticle]
+        plt.interactive(False)
+        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles)
 
-    print("Xmin: ", fBest.get_X())
-    print("Ymin: ", fBest.get_Y())
+    print("Xmin: ", BestParticle.get_X())
+    print("Ymin: ", BestParticle.get_Y())
