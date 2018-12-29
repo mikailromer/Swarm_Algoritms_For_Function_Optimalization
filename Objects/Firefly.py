@@ -1,4 +1,4 @@
-from Configs.CostFunction import CostFunction
+from CommonFunctions.CommonFunctions import CostFunction
 
 class Firefly():
     def __init__(self,Point,index,beta0):

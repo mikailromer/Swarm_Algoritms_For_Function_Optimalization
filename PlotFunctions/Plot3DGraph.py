@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot  as plt
 from mpl_toolkits.mplot3d import axes3d
-from Configs.CostFunction import CostFunctionForPlot
+from CommonFunctions.CommonFunctions import CostFunctionForPlot
 
 def plot3DGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfObjects):
     fig=plt.figure()

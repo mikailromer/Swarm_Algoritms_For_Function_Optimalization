@@ -78,7 +78,7 @@ def main():
 
         SetOfResults = [] # fitness list
         SetOfCockoos = []
-        results_list = [] 
+        results_list = []
         """Generate Initial Population"""
         SetOfCockoos=CreateSetOfCockoos(cf.get_population_size(),Xmin,Xmax,Ymin,Ymax)
 
