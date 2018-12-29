@@ -5,7 +5,7 @@ from CommonFunctions.CommonFunctions import CostFunction,AtractivenessFunction
 from CommonFunctions.CommonFunctions import ComputeDistanceBeetweenTwoObjects
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
-
+from Configs.ConfigDataForFaAlgorithm import *
 
 
 
@@ -43,22 +43,6 @@ def FindTheMostAtractiveFirefly(SwarmOfFireflies):
 
 
 if __name__ =='__main__':
-    '''
-        Set optimalization parameters, such as:
-            λ -  absortion parameter
-            β0 - maximal atractiveness
-            
-    '''
-    Lambda=0.02
-    Beta0=1
-    NumberOfFireflies=20
-    MaxGeneration=25
-    '''
-            Set dimentions of 3D plot, such as:
-               Xmin,Xmax,Ymin,Ymax
-               Zmin,Zmax - optionally
-
-    '''
 
     Best=None
     #Fireflies initialization

@@ -4,8 +4,9 @@ from CommonFunctions.CommonFunctions import CostFunction,CostFunctionForPlot, Ad
 from CommonFunctions.CommonFunctions import ComputeDistanceBeetweenTwoObjects
 from Objects.Particle import Particle
 from mpl_toolkits.mplot3d import axes3d
-from PlotFunctions.DataForPlot import *
 from PlotFunctions.Plot3DGraph import plot3DGraph
+from PlotFunctions.DataForPlot import *
+from Configs.ConfigDataForGsaAlgorithm import *
 
 
 
@@ -150,12 +151,7 @@ if __name__ == '__main__':
 
     '''
 
-    NumberOfParticles = 12
-    TotalTime=30
-    Gt0=0.0001
-    t0=1
-    beta=0.98
-    epsilon=8000
+
     '''
             Set dimentions of 3D plot, such as:
                Xmin,Xmax,Ymin,Ymax

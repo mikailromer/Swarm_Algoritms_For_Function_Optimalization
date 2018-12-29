@@ -1,5 +1,5 @@
-from Configs.CostFunction import *
-from Configs.AdaptationFunctionForGsaAlgorithm import AdaptationFunction
+
+from CommonFunctions.CommonFunctions import *
 
 class Particle():
     def __init__(self, Point,beta):
