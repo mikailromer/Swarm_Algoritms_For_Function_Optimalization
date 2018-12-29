@@ -106,13 +106,15 @@ def ComputeGravitationalConstant(G0,t0,beta,t):
         return G0*((t0/t)**beta)
 
 def CostFunctionForPlot(X, Y):
-    return X ** 2 + Y ** 2
+    return np.exp(np.sin(-np.sqrt(X**2+Y**2)))
+    # return X ** 2 + Y ** 2
 
 def CostFunction(X, Y):
     if (X==None or Y==None):
         return None
     else:
-        return X ** 2 + Y ** 2
+        return np.exp(np.sin(-np.sqrt(X ** 2 + Y ** 2)))
+        #return X ** 2 + Y ** 2
 
 def AdaptationFunction(CostFunction,beta):
     if CostFunction==None:
@@ -228,6 +230,19 @@ def ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,beta):
     for particle in SetOfParticles:
         particle.AdaptationFunctionAndCostFunctionValueSet(particle.get_X(),particle.get_Y(),beta)
 
+def plot3DprobeGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax):
+    fig = plt.figure()
+
+
+    ax = fig.add_subplot(1, 1, 1, projection='3d')
+    X = np.arange(Xmin, Xmax, 1)
+    Y = np.arange(Ymin, Ymax, 1)
+    X, Y = np.meshgrid(X, Y)
+    Z = np.exp(np.sin(-np.sqrt(X**2+Y**2)))
+    ax.plot_wireframe(X, Y, Z, rstride=1, cstride=1)
+    plt.show()
+    plt.close('all')
+
 def plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles):
     fig = plt.figure()
     PositionsOfParticlesIn_Xaxis = []
@@ -274,11 +289,12 @@ if __name__ == '__main__':
     Xmax = 20
     Ymin = -20
     Ymax = 20
-    Zmin = 0
+    Zmin = -200
     Zmax = 100
     BestParticle = None
     IndexOfTheBestParticle=None
     IndexOfTheWorstParticle=None
+    plot3DprobeGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax)
     # Fireflies initialization
     SetOfParticles = CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax,beta)
     t = 0
@@ -311,3 +327,4 @@ if __name__ == '__main__':
 
     print("Xmin: ", BestParticle.get_X())
     print("Ymin: ", BestParticle.get_Y())
+    print("Ymin: ", BestParticle.get_Z())

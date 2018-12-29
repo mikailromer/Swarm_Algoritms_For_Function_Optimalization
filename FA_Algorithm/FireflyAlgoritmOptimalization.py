@@ -6,6 +6,7 @@ from time import sleep as Sleep
 from mpl_toolkits.mplot3d.axes3d import get_test_data
 
 
+
 class Firefly():
     def __init__(self,Point,index,beta0):
         self.__Point=Point
