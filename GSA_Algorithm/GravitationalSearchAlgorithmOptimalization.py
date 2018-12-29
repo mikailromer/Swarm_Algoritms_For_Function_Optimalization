@@ -1,92 +1,12 @@
 import numpy as np
 from matplotlib import pyplot  as plt
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
-from time import sleep as Sleep
-from mpl_toolkits.mplot3d.axes3d import get_test_data
+from CommonFunctions.CommonFunctions import CostFunction,CostFunctionForPlot, AdaptationFunction
+from CommonFunctions.CommonFunctions import ComputeDistanceBeetweenTwoObjects
+from Objects.Particle import Particle
+from mpl_toolkits.mplot3d import axes3d
+from PlotFunctions.DataForPlot import *
+from PlotFunctions.Plot3DGraph import plot3DGraph
 
-
-class Particle():
-    def __init__(self, Point,beta):
-        self.__Point = Point
-        self.__Z = CostFunction(self.get_X(), self.get_Y())
-        self.__AdaptationFunctionValue=AdaptationFunction(self.get_Z(),beta)
-        self.__m=None
-        self.__M=None
-        self.__Fg={"Fgx":None,"Fgy":None}
-        self.__a={"ax":None,"ay":None}
-        self.__V={"vx":0,"vy":0}
-
-
-    def get_X(self):
-        return self.__Point["X"]
-
-    def get_Y(self):
-        return self.__Point["Y"]
-
-    def get_Z(self):
-        return self.__Z
-
-    def get_m(self):
-        return self.__m
-
-    def get_M(self):
-        return self.__M
-
-    def get_Fgx(self):
-        return self.__Fg["Fgx"]
-
-    def get_Fgy(self):
-        return self.__Fg["Fgy"]
-
-    def get_ax(self):
-        return self.__a["ax"]
-
-    def get_ay(self):
-        return self.__a["ay"]
-
-    def get_Vx(self):
-        return self.__V["vx"]
-
-    def get_Vy(self):
-        return self.__V["vy"]
-
-    def get_AdaptationFunctionValue(self):
-        return self.__AdaptationFunctionValue
-
-
-
-    def AdaptationFunctionAndCostFunctionValueSet(self,X,Y,beta):
-        self.__Z=CostFunction(X,Y)
-        self.__AdaptationFunctionValue = AdaptationFunction(self.get_Z(), beta)
-
-
-    def set_Z(self, CostFunctionValue):
-        self.__Z = CostFunctionValue
-
-    def set_Point(self, X, Y):
-        self.__Point = {"X": X, "Y": Y}
-
-    def set_X(self, X):
-        self.__Point["X"] = X
-
-    def set_Y(self, Y):
-        self.__Point["Y"] = Y
-
-    def set_a(self, ax,ay):
-        self.__a={"ax": ax, "ay": ay}
-
-    def set_M(self,M):
-        self.__M=M
-
-    def set_m(self,m):
-        self.__m=m
-
-    def set_Fg(self,Fgx,Fgy):
-        self.__Fg={"Fgx":Fgx,"Fgy":Fgy}
-
-    def set_V(self,Vx,Vy):
-        self.__V={"vx":Vx,"vy":Vy}
 
 
 
@@ -105,23 +25,8 @@ def ComputeGravitationalConstant(G0,t0,beta,t):
     else:
         return G0*((t0/t)**beta)
 
-def CostFunctionForPlot(X, Y):
-    return np.exp(np.sin(-np.sqrt(X**2+Y**2)))
-    # return X ** 2 + Y ** 2
 
-def CostFunction(X, Y):
-    if (X==None or Y==None):
-        return None
-    else:
-        return np.exp(np.sin(-np.sqrt(X ** 2 + Y ** 2)))
-        #return X ** 2 + Y ** 2
 
-def AdaptationFunction(CostFunction,beta):
-    if CostFunction==None:
-        return None
-    else:
-        result = -beta *CostFunction
-        return result
 
 def SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles):
     TheBestValue=SetOfParticles[0].get_AdaptationFunctionValue()
@@ -162,14 +67,7 @@ def ComputeInertialMassesOfParticles(SetOfParticles):
         mi = particle.get_M() / SumOfGravityMasses
         particle.set_m(mi)
 
-def ComputeDistanceBeetweenTwoParticles(Particle_I, Particle_J):
-    if ((Particle_I.get_X()==None and Particle_I.get_Y()==None) or (Particle_J.get_X()==None and Particle_J.get_Y()==None)):
-        return None
-    else:
-        X = Particle_J.get_X() - Particle_I.get_X()
-        Y = Particle_J.get_Y() - Particle_I.get_Y()
-        Rij = np.sqrt(X ** 2 + Y ** 2)
-        return Rij
+
 
 def ComputeNetForcesForParticles(SetOfParticles,G,epsilon):
     for Particle_I in SetOfParticles:
@@ -182,7 +80,7 @@ def ComputeNetForcesForParticles(SetOfParticles,G,epsilon):
             for Particle_J in SetOfParticles:
                 if Particle_J.get_M() != 0:
                     if Particle_J is not Particle_I:
-                        Rij = ComputeDistanceBeetweenTwoParticles(Particle_I, Particle_J)
+                        Rij = ComputeDistanceBeetweenTwoObjects(Particle_I, Particle_J)
                         FijX = FijX + G * ((Particle_I.get_M() * Particle_J.get_M()) / (Rij + epsilon)) \
                                * (Particle_J.get_X() - Particle_I.get_X())
                         FijY = FijY + G * ((Particle_I.get_M() * Particle_J.get_M()) / (Rij + epsilon)) \
@@ -232,8 +130,6 @@ def ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,beta):
 
 def plot3DprobeGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax):
     fig = plt.figure()
-
-
     ax = fig.add_subplot(1, 1, 1, projection='3d')
     X = np.arange(Xmin, Xmax, 1)
     Y = np.arange(Ymin, Ymax, 1)
@@ -243,26 +139,7 @@ def plot3DprobeGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax):
     plt.show()
     plt.close('all')
 
-def plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles):
-    fig = plt.figure()
-    PositionsOfParticlesIn_Xaxis = []
-    PositionsOfParticlesIn_Yaxis = []
-    PositionsOfParticlesIn_Zaxis = []
-    for particle in SetOfParticles:
-        PositionsOfParticlesIn_Xaxis.append(particle.get_X())
-        PositionsOfParticlesIn_Yaxis.append(particle.get_Y())
-        PositionsOfParticlesIn_Zaxis.append(particle.get_Z())
 
-    ax = fig.add_subplot(1, 1, 1, projection='3d')
-    X = np.arange(Xmin, Xmax, 1)
-    Y = np.arange(Ymin, Ymax, 1)
-    X, Y = np.meshgrid(X, Y)
-    Z = CostFunctionForPlot(X, Y)
-    ax.plot_wireframe(X, Y, Z, rstride=1, cstride=1)
-    ax.scatter(PositionsOfParticlesIn_Xaxis, PositionsOfParticlesIn_Yaxis, PositionsOfParticlesIn_Zaxis, c='r',
-               marker='o')
-    plt.show()
-    plt.close('all')
 
 
 if __name__ == '__main__':
@@ -285,12 +162,7 @@ if __name__ == '__main__':
                Zmin,Zmax - optionally
 
     '''
-    Xmin = -20
-    Xmax = 20
-    Ymin = -20
-    Ymax = 20
-    Zmin = -200
-    Zmax = 100
+
     BestParticle = None
     IndexOfTheBestParticle=None
     IndexOfTheWorstParticle=None
