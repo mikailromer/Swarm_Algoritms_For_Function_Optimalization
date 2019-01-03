@@ -68,8 +68,8 @@ if __name__ =='__main__':
                     SwarmOfFireflies[i].set_Point(Xi,Yi)
                     SwarmOfFireflies[i].set_beta(beta)
 
-                SwarmOfFireflies[i].set_Z(CostFunctionFor_Xi)
-                SwarmOfFireflies[i].set_Z(CostFunctionFor_Xj)
+                SwarmOfFireflies[i].set_Z()
+
 
         uk=GenerateRandomVector()
         IndexOfTheMostAtractiveFirefly=FindTheMostAtractiveFirefly(SwarmOfFireflies)
@@ -78,8 +78,7 @@ if __name__ =='__main__':
 
         SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].set_Point(TheMostAtractiveFirefly_X,TheMostAtractiveFirefly_Y)
 
-        SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].set_Z(CostFunction(SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].get_X()\
-                                                                            ,SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].get_Y()))
+        SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].set_Z()
         Best=SwarmOfFireflies[IndexOfTheMostAtractiveFirefly]
         Generation=Generation+1
         plt.interactive(False)

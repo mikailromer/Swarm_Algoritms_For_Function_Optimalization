@@ -22,8 +22,8 @@ class Firefly():
     def get_beta(self):
         return self.__beta
 
-    def set_Z(self,CostFunctionValue):
-        self.__Z=CostFunctionValue
+    def set_Z(self):
+        self.__Z=CostFunction(self.get_X(),self.get_Y())
 
     def set_Point(self,X,Y):
         self.__Point={"X":X,"Y":Y}

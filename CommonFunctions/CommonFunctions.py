@@ -21,12 +21,14 @@ def AtractivenessFunction(beta0,Rij,Lambda):
     return result
 
 def CostFunctionForPlot(X, Y):
-    return np.exp(np.sin(-np.sqrt(X**2+Y**2)))
-    # return X ** 2 + Y ** 2
+     #return np.exp(np.sin(-np.sqrt(X**2+Y**2)))
+     return X ** 2 + Y ** 2
+     #return 1000*np.sin(X + np.log10(np.fabs(X) + 0.00001)) + X ** 2 + Y ** 2
 
 def CostFunction(X, Y):
     if (X==None or Y==None):
         return None
     else:
-        return np.exp(np.sin(-np.sqrt(X ** 2 + Y ** 2)))
-        #return X ** 2 + Y ** 2
+        #return np.exp(np.sin(-np.sqrt(X ** 2 + Y ** 2)))
+        #return 1000*np.sin(X+np.log10(np.fabs(X)+0.00001))+X**2+Y**2
+        return X ** 2 + Y ** 2

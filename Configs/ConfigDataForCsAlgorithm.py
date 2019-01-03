@@ -1,13 +1,13 @@
 class CS_DataConfig:
-    __PopulationSize = 50 # Population Size
+    __PopulationSize = 30 # Population Size
     __MaxDomain = 500 # variable upper limit
     __MinDomain = -500 # variable lower limit
     __Lambda = 1.5 # parameter for Levy flight
     __Pa = 0.25
-    __Step_Size = 0.01
-    __Dimension = 10 # The number of dimension
-    __Trial = 31
-    __Iteration = 3000
+    __Step_Size = 0.001
+    __Dimension = 1 # The number of dimension
+    __Trial = 25
+    __Iteration = 150
 
     @classmethod
     def get_population_size(cls):

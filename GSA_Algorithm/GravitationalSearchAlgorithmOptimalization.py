@@ -162,7 +162,6 @@ if __name__ == '__main__':
     BestParticle = None
     IndexOfTheBestParticle=None
     IndexOfTheWorstParticle=None
-    plot3DprobeGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax)
     # Fireflies initialization
     SetOfParticles = CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax,beta)
     t = 0
