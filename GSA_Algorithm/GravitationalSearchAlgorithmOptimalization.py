@@ -6,7 +6,7 @@ from Objects.Particle import Particle
 from mpl_toolkits.mplot3d import axes3d
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
-from Configs.ConfigDataForGsaAlgorithm import *
+from Configs.ConfigDataForGsaAlgorithm import GSA_DataConfig as cf
 
 
 
@@ -163,17 +163,17 @@ if __name__ == '__main__':
     IndexOfTheBestParticle=None
     IndexOfTheWorstParticle=None
     # Fireflies initialization
-    SetOfParticles = CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax,beta)
+    SetOfParticles = CreateSetOfParticles(cf.get_NumberOfParticles(), Xmin, Xmax, Ymin, Ymax,cf.get_beta())
     t = 0
-    while t < TotalTime and len(SetOfParticles)>1:
-        G = ComputeGravitationalConstant(Gt0, t0, beta, t)
+    while t < cf.get_totalTime() and len(SetOfParticles)>1:
+        G = ComputeGravitationalConstant(cf.get_Gt0(), cf.get_t0(), cf.get_beta(), t)
       #  indeks=3
         fBest, fWorst,IndexOfTheBestParticle,IndexOfTheWorstParticle = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles)
         ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst)
         ComputeInertialMassesOfParticles(SetOfParticles)
  #       prev_Fx = SetOfParticles[indeks].get_Fgx()
   #      prev_Fy = SetOfParticles[indeks].get_Fgy()
-        ComputeNetForcesForParticles(SetOfParticles,G,epsilon)
+        ComputeNetForcesForParticles(SetOfParticles,G,cf.get_epsilon())
    #     prev_ax = SetOfParticles[indeks].get_ax()
     #    prev_ay = SetOfParticles[indeks].get_ay()
         ComputeAccelerationsForParticles(SetOfParticles)
@@ -183,7 +183,7 @@ if __name__ == '__main__':
     #    prev_x=SetOfParticles[indeks].get_X()
      #   prev_y=SetOfParticles[indeks].get_Y()
         ComputeCordinatesForParticles(SetOfParticles)
-        ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,beta)
+        ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,cf.get_beta())
         removedParticle=SetOfParticles.pop(IndexOfTheWorstParticle)
         fBest,fWorst,IndexOfTheBestParticle,IndexOfTheWorstParticle=\
             SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles)
