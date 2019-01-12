@@ -1,22 +1,18 @@
 import numpy as np
-import os
 import sys
 from random import SystemRandom
-import csv
 from Configs.ConfigDataForCsAlgorithm import CS_DataConfig as cf
 from Objects.Cockoo import Cockoo
 from PlotFunctions.DataForPlot import *
 from PlotFunctions.Plot3DGraph import plot3DGraph
+from os import path, mkdir
 
 
 
-if os.path.exists("results"):
+if path.exists("results"):
     pass
 else:
-    os.mkdir("results")
-
-results = open("results" + os.sep + "results.csv", "w")
-results_writer = csv.writer(results, lineterminator="\n")
+    mkdir("results")
 
 def CreateSetOfCockoos(PopulationSize,Xmin,Xmax,Ymin,Ymax):
     SetOfCockoos = []
@@ -101,70 +97,76 @@ def abandon(cockoo):
     cockoo.set_Point(X,Y)
 
 
-def main():
-    for trial in range(cf.get_trial()):
-        randObject = SystemRandom()
-        np.random.seed(randObject.randint(0,1000))
-
-        SetOfResults = [] # fitness list
-        SetOfCockoos = []
-        results_list = []
-        BestFitness=0
-        """Generate Initial Population"""
-        SetOfCockoos=CreateSetOfCockoos(cf.get_population_size(),Xmin,Xmax,Ymin,Ymax)
-
-        """Sort List"""
-        SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
-
-        """Find Initial Best"""
-        BestPositionInXaxis = SetOfCockoos[0].get_X()
-        BestPositionInYaxis=SetOfCockoos[0].get_Y()
-        BestFitness = SetOfCockoos[0].get_Z()
-
-        """↓↓↓Main Loop↓↓↓"""
-        for iteration in range(cf.get_iteration()):
-
-            """Generate New Solutions"""
-            for i in range(len(SetOfCockoos)):
-                get_cuckoo(SetOfCockoos[i])
-                SetOfCockoos[i].set_Z(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
-
-                """random choice (say j)"""
-                j = np.random.randint(low=0, high=cf.get_population_size())
-                while j == i: #random id[say j] ≠ i
-                    j = np.random.randint(0, cf.get_population_size())
-
-                # for minimize problem
-                if(SetOfCockoos[i].get_Z() < SetOfCockoos[j].get_Z()):
-
-                    SetOfCockoos[j].set_Point(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
-                    SetOfCockoos[j].set_Z(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
-
-            """Sort (to Keep Best)"""
-            SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
-
-            """Abandon Solutions (exclude the best)"""
-            NumberOfTheWorstCockoos=round(cf.get_Pa()*cf.get_population_size())
-            IndexesOfTheWorstSolutions=findTheWorstSolutions(SetOfCockoos,NumberOfTheWorstCockoos)
-            for a in IndexesOfTheWorstSolutions:
-                abandon(SetOfCockoos[a])
-                SetOfCockoos[a].set_Z(SetOfCockoos[a].get_X(),SetOfCockoos[a].get_Y())
-
-            """Sort to Find the Best"""
-            SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
-
-            if SetOfCockoos[0].get_Z() < BestFitness:
-                BestFitness = SetOfCockoos[0].get_Z()
-                BestPositionInXaxis = SetOfCockoos[0].get_X()
-                BestPositionInYaxis = SetOfCockoos[0].get_Y()
-
-            sys.stdout.write("\r Trial:%3d , Iteration:%7d, BestFitness:%.4f" % (trial , iteration, BestFitness))
-
-            results_list.append(str(BestFitness))
-
-        results_writer.writerow(results_list)
-        plot3DGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfCockoos)
-
 if __name__ == '__main__':
-    main()
-    results.close()
+    with open(path.join("results", "results.txt"), "w") as results:
+        SetOfResults = []  # fitness list
+        SetOfCockoos = []
+        TheBestCockoo=None
+        for trial in range(cf.get_trial()):
+            BestFitness = 0
+            BestPositionInXaxis = None
+            BestPositionInYaxis = None
+            writtenList=[]
+            randObject = SystemRandom()
+            np.random.seed(randObject.randint(0,1000))
+            """Generate Initial Population"""
+            SetOfCockoos=CreateSetOfCockoos(cf.get_population_size(),Xmin,Xmax,Ymin,Ymax)
+
+            """Sort List"""
+            SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
+            if trial==0:
+                TheBestCockoo=SetOfCockoos[0]
+
+            """Find Initial Best"""
+            BestPositionInXaxis = SetOfCockoos[0].get_X()
+            BestPositionInYaxis=SetOfCockoos[0].get_Y()
+            BestFitness = SetOfCockoos[0].get_Z()
+
+            """↓↓↓Main Loop↓↓↓"""
+            for iteration in range(cf.get_iteration()):
+
+                """Generate New Solutions"""
+                for i in range(len(SetOfCockoos)):
+                    get_cuckoo(SetOfCockoos[i])
+                    SetOfCockoos[i].set_Z(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
+
+                    """random choice (say j)"""
+                    j = np.random.randint(low=0, high=cf.get_population_size())
+                    while j == i: #random id[say j] ≠ i
+                        j = np.random.randint(0, cf.get_population_size())
+
+                    # for minimize problem
+                    if(SetOfCockoos[i].get_Z() < SetOfCockoos[j].get_Z()):
+
+                        SetOfCockoos[j].set_Point(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
+                        SetOfCockoos[j].set_Z(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
+
+                """Sort (to Keep Best)"""
+                SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
+
+                """Abandon Solutions (exclude the best)"""
+                NumberOfTheWorstCockoos=round(cf.get_Pa()*cf.get_population_size())
+                IndexesOfTheWorstSolutions=findTheWorstSolutions(SetOfCockoos,NumberOfTheWorstCockoos)
+                for a in IndexesOfTheWorstSolutions:
+                    abandon(SetOfCockoos[a])
+                    SetOfCockoos[a].set_Z(SetOfCockoos[a].get_X(),SetOfCockoos[a].get_Y())
+
+                """Sort to Find the Best"""
+                SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
+                if SetOfCockoos[0].get_Z()<TheBestCockoo.get_Z():
+                    TheBestCockoo=SetOfCockoos[0]
+
+                if SetOfCockoos[0].get_Z() < BestFitness:
+                    BestFitness = SetOfCockoos[0].get_Z()
+                    BestPositionInXaxis = SetOfCockoos[0].get_X()
+                    BestPositionInYaxis = SetOfCockoos[0].get_Y()
+
+
+                sys.stdout.write("\r Trial:%3d , Iteration:%7d, BestFitness:%.4f" %(trial , iteration, BestFitness))
+                print('\n')
+                z=str(trial)
+            results.write('Trial: {0}  Xmin: {1}  Ymin: {2}  Zmin: {3}\n'.format(trial,BestPositionInXaxis,BestPositionInYaxis,BestFitness))
+        plot3DGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfCockoos)
+        print('The best minimum: {}\n'.format(TheBestCockoo.get_Z()))
+        print('For X: {0} Y: {1}\n'.format(TheBestCockoo.get_X(),TheBestCockoo.get_Y()))
+
