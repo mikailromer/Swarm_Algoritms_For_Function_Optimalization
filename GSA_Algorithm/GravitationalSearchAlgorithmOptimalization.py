@@ -120,11 +120,23 @@ def ComputeVelocityForParticles(SetOfParticles):
 def ComputeCordinatesForParticles(SetOfParticles):
     for Particle_I in SetOfParticles:
         if (Particle_I.get_Vx()==None) and (Particle_I.get_Vy()==None):
-            Particle_I.set_Point(None, None)
+            Particle_I.set_Point(Particle_I.get_X(), Particle_I.get_Y())
         else:
             x = Particle_I.get_X() + Particle_I.get_Vx()
             y = Particle_I.get_Y() + Particle_I.get_Vy()
             Particle_I.set_Point(x, y)
+
+            if Particle_I.get_X() > Xmax:
+                Particle_I.set_Point(Xmax, Particle_I.get_Y())
+
+            if Particle_I.get_X() < Xmin:
+                Particle_I.set_Point(Xmin, Particle_I.get_Y())
+
+            if Particle_I.get_Y() > Ymax:
+                Particle_I.set_Point(Particle_I.get_X(), Ymax)
+
+            if Particle_I.get_Y() < Ymin:
+                Particle_I.set_Point(Particle_I.get_X(), Ymin)
 
 
 

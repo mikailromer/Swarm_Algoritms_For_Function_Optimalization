@@ -1,5 +1,5 @@
 class GSA_DataConfig:
-    __NumberOfParticles=10 # Population Size
+    __NumberOfParticles=50 # Population Size
     __TotalTime = 1000
     __trials = 25
     __beta = 0.98
