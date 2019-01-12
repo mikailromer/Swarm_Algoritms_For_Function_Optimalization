@@ -1,4 +1,5 @@
 from CommonFunctions.CommonFunctions import CostFunction
+from PlotFunctions.DataForPlot import *
 
 class Firefly():
     def __init__(self,Point,index,beta0):
@@ -26,7 +27,20 @@ class Firefly():
         self.__Z=CostFunction(self.get_X(),self.get_Y())
 
     def set_Point(self,X,Y):
-        self.__Point={"X":X,"Y":Y}
+        self.__Point = {"X": X, "Y": Y}
+
+        if self.get_X() > Xmax:
+            self.__Point = {"X": Xmax, "Y": Y}
+
+        if self.get_X() < Xmin:
+            self.__Point = {"X": Xmin, "Y": Y}
+
+        if self.get_Y() > Ymax:
+            self.__Point = {"X": X, "Y": Ymax}
+
+        if self.get_Y() < Ymin:
+            self.__Point = {"X": X, "Y": Ymin}
+
 
     def set_X(self,X):
         self.__Point["X"]=X
