@@ -1,21 +1,10 @@
-from CommonFunctions.CommonFunctions import CostFunction
-from PlotFunctions.DataForPlot import *
+from Objects.BasicObject import BasicObject
 
-class Firefly():
-    def __init__(self,Point,index,beta0):
-        self.__Point=Point
+class Firefly(BasicObject):
+    def __init__(self,X,Y,index,beta0):
+        BasicObject.__init__(self ,X ,Y )
         self.__index=index
-        self.__Z=CostFunction(self.get_X(),self.get_Y())
         self.__beta=beta0
-
-    def get_X(self):
-        return self.__Point["X"]
-
-    def get_Y(self):
-        return self.__Point["Y"]
-
-    def get_Z(self):
-        return self.__Z
 
     def get_index(self):
         return self.__index
@@ -23,30 +12,9 @@ class Firefly():
     def get_beta(self):
         return self.__beta
 
-    def set_Z(self):
-        self.__Z=CostFunction(self.get_X(),self.get_Y())
-
-    def set_Point(self,X,Y):
-        self.__Point = {"X": X, "Y": Y}
-
-        if self.get_X() > Xmax:
-            self.__Point = {"X": Xmax, "Y": Y}
-
-        if self.get_X() < Xmin:
-            self.__Point = {"X": Xmin, "Y": Y}
-
-        if self.get_Y() > Ymax:
-            self.__Point = {"X": X, "Y": Ymax}
-
-        if self.get_Y() < Ymin:
-            self.__Point = {"X": X, "Y": Ymin}
-
-
-    def set_X(self,X):
-        self.__Point["X"]=X
-
-    def set_Y(self,Y):
-        self.__Point["Y"]=Y
-
     def set_beta(self,beta):
         self.__beta=beta
+
+ #   def set_Z(self):
+  #      self.__Point["Z"]=CostFunction(self.get_X(),self.get_Y())
+

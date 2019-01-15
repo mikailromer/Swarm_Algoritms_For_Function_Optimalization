@@ -19,8 +19,7 @@ def CreateSetOfCockoos(PopulationSize,Xmin,Xmax,Ymin,Ymax):
     for index in range(PopulationSize):
         X=round(np.random.uniform(Xmin,Xmax), 3)
         Y=round(np.random.uniform(Ymin, Ymax), 3)
-        Point={"X":X,"Y":Y}
-        SetOfCockoos.append(Cockoo(Point))
+        SetOfCockoos.append(Cockoo(X,Y))
     return SetOfCockoos
 
 

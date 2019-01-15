@@ -20,8 +20,7 @@ def CreateSwarmOfFireflies(NumberOfFireflies,Xmin,Xmax,Ymin,Ymax,beta0):
     for index in range(NumberOfFireflies):
         X=round(np.random.uniform(Xmin,Xmax), 3)
         Y=round(np.random.uniform(Ymin, Ymax), 3)
-        Point={"X":X,"Y":Y}
-        SwarmOfFireflies.append(Firefly(Point,index,beta0))
+        SwarmOfFireflies.append(Firefly(X,Y,index ,beta0 ))
     return SwarmOfFireflies
 
 
@@ -76,15 +75,11 @@ if __name__ =='__main__':
                             SwarmOfFireflies[i].set_Point(Xi,Yi)
                             SwarmOfFireflies[i].set_beta(beta)
 
-                        SwarmOfFireflies[i].set_Z()
-
-
                 uk=GenerateRandomVector()
                 IndexOfTheMostAtractiveFirefly=FindTheMostAtractiveFirefly(SwarmOfFireflies)
                 TheMostAtractiveFirefly_X=SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].get_X()+uk["uX"]
                 TheMostAtractiveFirefly_Y = SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].get_Y() + uk["uY"]
                 SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].set_Point(TheMostAtractiveFirefly_X,TheMostAtractiveFirefly_Y)
-                SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].set_Z()
                 if Generation==0:
                     Best = SwarmOfFireflies[IndexOfTheMostAtractiveFirefly]
 
