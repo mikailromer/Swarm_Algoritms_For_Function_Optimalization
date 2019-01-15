@@ -210,7 +210,7 @@ if __name__ == '__main__':
                     if SetOfParticles[IndexOfTheBestParticle].get_Z()<BestParticle.get_Z():
                         BestParticle=SetOfParticles[IndexOfTheBestParticle]
 
-                sys.stdout.write("\r Time:%4d, BestFitness:%4f\n" % (t, BestParticle.get_Z()))
+                sys.stdout.write("\r Time:%4d, BestFitness:%8f\n" % (t, BestParticle.get_Z()))
                 t = t + 1
                 results.write('Xmin: {0}  Ymin: {1}  Zmin: {2}\n'.format(BestParticle.get_X(),BestParticle.get_Y(),BestParticle.get_Z()))
 
