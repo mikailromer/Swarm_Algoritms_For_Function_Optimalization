@@ -1,11 +1,20 @@
-Xmin: [3.02596136]  Ymin: [4.25196136]  Zmin: [27.23561762]
-Xmin: [3.02596136]  Ymin: [4.25196136]  Zmin: [27.23561762]
-Xmin: [3.02596136]  Ymin: [4.25196136]  Zmin: [27.23561762]
-Xmin: -1.282  Ymin: -4.616  Zmin: 22.950979999999998
-Xmin: -1.282  Ymin: -4.616  Zmin: 22.950979999999998
-Xmin: [-1.28056532]  Ymin: [-4.61456532]  Zmin: [22.93406069]
-Xmin: [-1.28056532]  Ymin: [-4.61456532]  Zmin: [22.93406069]
-Xmin: [-1.27755535]  Ymin: [-4.61155535]  Zmin: [22.89859047]
-Xmin: [-1.27148683]  Ymin: [-4.60548683]  Zmin: [22.82718773]
-Xmin: [-1.27148683]  Ymin: [-4.60548683]  Zmin: [22.82718773]
-Xmin: [-1.26709028]  Ymin: [-4.60109028]  Zmin: [22.77554952]
+Xmin: [-5.99475133]  Ymin: [-3.08775133]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d4a550>
+Xmin: [-5.9873453]  Ymin: [-3.0803453]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f28>
+Xmin: [-5.99125164]  Ymin: [-3.08425164]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478dc2cfd0>
+Xmin: [-5.99438507]  Ymin: [-3.08738507]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478d794b00>
+Xmin: [-5.99513483]  Ymin: [-3.08813483]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f28>
+Xmin: [-5.99542609]  Ymin: [-3.08842609]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d4a550>
+Xmin: [-5.99360857]  Ymin: [-3.08660857]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f60>
+Xmin: [-5.99519916]  Ymin: [-3.08819916]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478dc2cfd0>
+Xmin: [-5.99436126]  Ymin: [-3.08736126]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f60>
+Xmin: -0.684  Ymin: 4.28  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f60>
+Xmin: [-0.68638639]  Ymin: [4.27761361]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478d794b00>
+Xmin: [-0.69284776]  Ymin: [4.27115224]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f28>
+Xmin: [-0.69445892]  Ymin: [4.26954108]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478dc2cfd0>
+Xmin: [-0.68927313]  Ymin: [4.27472687]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d4a550>
+Xmin: [-0.68809151]  Ymin: [4.27590849]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d4a550>
+Xmin: [-0.68764275]  Ymin: [4.27635725]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478dc2cfd0>
+Xmin: [-0.68828273]  Ymin: [4.27571727]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478d794b00>
+Xmin: [-0.6898806]  Ymin: [4.2741194]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f28>
+Xmin: [-0.69373188]  Ymin: [4.27026812]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f478d794b00>
+Xmin: [-0.69634155]  Ymin: [4.26765845]  Zmin: <Objects.Cockoo.Cockoo object at 0x7f4793d45f60>

@@ -5,6 +5,8 @@ from Configs.ConfigDataForCsAlgorithm import CS_DataConfig as cf
 from Objects.Cockoo import Cockoo
 from PlotFunctions.DataForPlot import *
 from PlotFunctions.Plot3DGraph import plot3DGraph
+from PlotFunctions.CostFunctionGraph2D import CostFunctionGraph2D
+from CommonFunctions.CommonFunctions import collectListOfPoints
 from os import path, mkdir
 
 
@@ -110,6 +112,7 @@ if __name__ == '__main__':
             BestPositionInXaxis = None
             BestPositionInYaxis = None
             writtenList=[]
+            tableOfPoints = []
             randObject = SystemRandom()
             np.random.seed(randObject.randint(0,1000))
             """Generate Initial Population"""
@@ -124,7 +127,7 @@ if __name__ == '__main__':
             BestPositionInXaxis = SetOfCockoos[0].get_X()
             BestPositionInYaxis=SetOfCockoos[0].get_Y()
             BestFitness = SetOfCockoos[0].get_Z()
-
+            tableOfPoints.append(collectListOfPoints(SetOfCockoos))
             """↓↓↓Main Loop↓↓↓"""
             for iteration in range(cf.get_iteration()):
 
@@ -160,12 +163,13 @@ if __name__ == '__main__':
                     BestPositionInXaxis = SetOfCockoos[0].get_X()
                     BestPositionInYaxis = SetOfCockoos[0].get_Y()
 
-
+                tableOfPoints.append(collectListOfPoints(SetOfCockoos))
                 sys.stdout.write("\r Iteration:%7d, BestFitness:%.4f" %( iteration, BestFitness))
-                results.write('Xmin: {0}  Ymin: {1}  Zmin: {2}\n'.format(BestPositionInXaxis,BestPositionInYaxis,BestFitness))
+                results.write('Xmin: {0}  Ymin: {1}  Zmin: {2}\n'.format(SetOfCockoos[0].get_X(),SetOfCockoos[0].get_Y(),SetOfCockoos[0]))
                 print('\n')
 
         print('The best minimum: {}\n'.format(TheBestCockoo.get_Z()))
         print('For X: {0} Y: {1}\n'.format(TheBestCockoo.get_X(),TheBestCockoo.get_Y()))
-        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfCockoos)
+        CostFunctionGraph2D(Zmin,Zmax,0,tableOfPoints,cf.get_iteration())
+        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfCockoos,tableOfPoints)
 
