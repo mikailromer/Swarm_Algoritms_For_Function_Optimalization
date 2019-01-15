@@ -1,26 +1,15 @@
-
+from Objects.BasicObject import BasicObject
 from CommonFunctions.CommonFunctions import *
 
-class Particle():
-    def __init__(self, Point,beta):
-        self.__Point = Point
-        self.__Z = CostFunction(self.get_X(), self.get_Y())
+class Particle(BasicObject):
+    def __init__(self, X,Y,beta):
+        BasicObject.__init__(self,X,Y)
         self.__AdaptationFunctionValue=AdaptationFunction(self.get_Z(),beta)
         self.__m=None
         self.__M=None
         self.__Fg={"Fgx":None,"Fgy":None}
         self.__a={"ax":None,"ay":None}
         self.__V={"vx":0,"vy":0}
-
-
-    def get_X(self):
-        return self.__Point["X"]
-
-    def get_Y(self):
-        return self.__Point["Y"]
-
-    def get_Z(self):
-        return self.__Z
 
     def get_m(self):
         return self.__m
@@ -49,24 +38,9 @@ class Particle():
     def get_AdaptationFunctionValue(self):
         return self.__AdaptationFunctionValue
 
-
-
     def AdaptationFunctionAndCostFunctionValueSet(self,X,Y,beta):
-        self.__Z=CostFunction(X,Y)
+        self.set_Point(X,Y)
         self.__AdaptationFunctionValue = AdaptationFunction(self.get_Z(), beta)
-
-
-    def set_Z(self, CostFunctionValue):
-        self.__Z = CostFunctionValue
-
-    def set_Point(self, X, Y):
-        self.__Point = {"X": X, "Y": Y}
-
-    def set_X(self, X):
-        self.__Point["X"] = X
-
-    def set_Y(self, Y):
-        self.__Point["Y"] = Y
 
     def set_a(self, ax,ay):
         self.__a={"ax": ax, "ay": ay}

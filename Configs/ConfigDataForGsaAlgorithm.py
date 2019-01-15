@@ -1,8 +1,8 @@
 class GSA_DataConfig:
-    __NumberOfParticles=20 # Population Size
-    __TotalTime = 1000
-    __trials = 25
-    __beta = 0.98
+    __NumberOfParticles=12 # Population Size
+    __TotalTime = 100
+    __trials = 1
+    __beta = 0.995
     __t0 = 1
     __Gt0 = 0.0001
     __epsilon = 8000

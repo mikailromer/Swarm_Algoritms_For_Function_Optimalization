@@ -21,8 +21,7 @@ def CreateSetOfParticles(NumberOfParticles, Xmin, Xmax, Ymin, Ymax,beta):
     for index in range(NumberOfParticles):
         X = round(np.random.uniform(Xmin, Xmax), 3)
         Y = round(np.random.uniform(Ymin, Ymax), 3)
-        Point = {"X": X, "Y": Y}
-        SetOfParticles.append(Particle(Point,beta))
+        SetOfParticles.append(Particle(X,Y,beta))
     return SetOfParticles
 
 def ComputeGravitationalConstant(G0,t0,beta,t):
@@ -30,9 +29,6 @@ def ComputeGravitationalConstant(G0,t0,beta,t):
         return G0
     else:
         return G0*((t0/t)**beta)
-
-
-
 
 def SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles):
     TheBestValue=SetOfParticles[0].get_AdaptationFunctionValue()
@@ -214,10 +210,9 @@ if __name__ == '__main__':
                     if SetOfParticles[IndexOfTheBestParticle].get_Z()<BestParticle.get_Z():
                         BestParticle=SetOfParticles[IndexOfTheBestParticle]
 
-                sys.stdout.write("\r Trial:%3d , Time:%4d, BestFitness:%4f\n" % (trial, t, BestParticle.get_Z()))
+                sys.stdout.write("\r Time:%4d, BestFitness:%4f\n" % (t, BestParticle.get_Z()))
                 t = t + 1
-
-            results.write('Trial: {0}  Xmin: {1}  Ymin: {2}  Zmin: {3}\n'.format(trial,BestParticle.get_X(),BestParticle.get_Y(),BestParticle.get_Z()))
+                results.write('Xmin: {0}  Ymin: {1}  Zmin: {2}\n'.format(BestParticle.get_X(),BestParticle.get_Y(),BestParticle.get_Z()))
 
 
     print('\nThe best minimum: {}\n'.format(BestParticle.get_Z()))
