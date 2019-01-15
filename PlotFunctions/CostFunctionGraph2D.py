@@ -17,7 +17,7 @@ def CostFunctionGraph2D(Zmin, Zmax, BestObjectIndex,tableOfPoints, iterations):
 
     line = Line2D(IterationList, CostFunctionPoints)
     ax.add_line(line)
-    plt.plot(IterationList,CostFunctionPoints)
+    plt.plot(IterationList,CostFunctionPoints, label="Cost function for the best object.")
     ax.axis([0, iterations, Zmin, Zmax])
 
     for row in tableOfPoints:
@@ -29,7 +29,7 @@ def CostFunctionGraph2D(Zmin, Zmax, BestObjectIndex,tableOfPoints, iterations):
     ax2 = fig.add_subplot(111)
     line = Line2D(IterationList, MeanValuePoints)
     ax2.add_line(line)
-    plt.plot(IterationList,MeanValuePoints)
+    plt.plot(IterationList,MeanValuePoints, label="Mean value ")
     plt.xlabel('Iterations')
     plt.ylabel('Cost Function')
     plt.title('Cost Function Optimalization')

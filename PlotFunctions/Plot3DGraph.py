@@ -28,10 +28,11 @@ def plot3DGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfObjects,TableOfPoints):
         s=np.array(ObjectTrace_Y)
         t=np.array(ObjectTrace_Z)
         ax2.scatter(r, s, zs=t, c='r', s=4)
-        ax2.plot3D(r, s, ObjectTrace_Z)
-
+        ax2.plot3D(r, s, ObjectTrace_Z, label='Trace {}'.format(ObjectIndex+1))
+        
+    plt.title('Cost function optimalization.')
+    plt.legend()
     plt.show()
-    print('o')
     plt.close('all')
 
 def parsePointsTraceForObject(index,TableOfPoints, mode='XYZ'):
