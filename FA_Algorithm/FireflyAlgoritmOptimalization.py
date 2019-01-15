@@ -1,11 +1,11 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from Objects.Firefly import Firefly
 from CommonFunctions.CommonFunctions import CostFunction,AtractivenessFunction
 from CommonFunctions.CommonFunctions import ComputeDistanceBeetweenTwoObjects
 from CommonFunctions.CommonFunctions import collectListOfPoints
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
+from PlotFunctions.CostFunctionGraph2D import CostFunctionGraph2D
 from Configs.ConfigDataForFaAlgorithm import FA_DataConfig as cf
 from os import path,mkdir
 import sys
@@ -100,7 +100,7 @@ if __name__ =='__main__':
             results.write('Generation: {0}  Xmin: {1}  Ymin: {2}  Zmin: {3}\n'.format(Generation,Best.get_X(),Best.get_Y(),Best.get_Z()))
             Generation=Generation+1
 
-
+        CostFunctionGraph2D(Zmin,Zmax,IndexOfTheMostAtractiveFirefly,tableOfPoints,cf.get_iteration())
         plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SwarmOfFireflies,tableOfPoints)
         print('The best minimum: {}\n'.format(Best.get_Z()))
         print('For X: {0} Y: {1}\n'.format(Best.get_X(), Best.get_Y()))
