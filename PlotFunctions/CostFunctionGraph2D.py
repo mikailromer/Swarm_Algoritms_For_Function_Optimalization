@@ -12,7 +12,7 @@ def CostFunctionGraph2D(Zmin, Zmax, BestObjectIndex,tableOfPoints, iterations):
     CostFunctionPoints = parsePointsTraceForObject(BestObjectIndex, tableOfPoints,mode='Z')
     MeanValuePoints=[]
     IterationList=[]
-    for i in range(iterations):
+    for i in range(len(CostFunctionPoints)):
         IterationList.append(i)
 
     line = Line2D(IterationList, CostFunctionPoints)

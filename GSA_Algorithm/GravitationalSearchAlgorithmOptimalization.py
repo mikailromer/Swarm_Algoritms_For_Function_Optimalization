@@ -6,6 +6,8 @@ from Objects.Particle import Particle
 from mpl_toolkits.mplot3d import axes3d
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
+from PlotFunctions.CostFunctionGraph2D import CostFunctionGraph2D
+from CommonFunctions.CommonFunctions import collectListOfPoints
 from Configs.ConfigDataForGsaAlgorithm import GSA_DataConfig as cf
 from os import path,mkdir
 import sys
@@ -181,23 +183,16 @@ if __name__ == '__main__':
     with open(path.join("results", "results.txt"), "w") as results:
         for trial in range(cf.get_trials()):
             t = 0
+            tableOfPoints = []
+            tableOfPoints.append(collectListOfPoints(SetOfParticles))
             while t < cf.get_totalTime() and len(SetOfParticles)>1:
                 G = ComputeGravitationalConstant(cf.get_Gt0(), cf.get_t0(), cf.get_beta(), t)
-              #  indeks=3
                 fBest, fWorst,IndexOfTheBestParticle,IndexOfTheWorstParticle = SearchForTheBestAndTheWorstAdaptationFunctionValues(SetOfParticles)
                 ComputeGravityMassesForParticles(SetOfParticles,fBest,fWorst)
                 ComputeInertialMassesOfParticles(SetOfParticles)
-         #       prev_Fx = SetOfParticles[indeks].get_Fgx()
-          #      prev_Fy = SetOfParticles[indeks].get_Fgy()
                 ComputeNetForcesForParticles(SetOfParticles,G,cf.get_epsilon())
-           #     prev_ax = SetOfParticles[indeks].get_ax()
-            #    prev_ay = SetOfParticles[indeks].get_ay()
                 ComputeAccelerationsForParticles(SetOfParticles)
-             #   prev_Vx = SetOfParticles[indeks].get_Vx()
-              #  prev_Vy = SetOfParticles[indeks].get_Vy()
                 ComputeVelocityForParticles(SetOfParticles)
-            #    prev_x=SetOfParticles[indeks].get_X()
-             #   prev_y=SetOfParticles[indeks].get_Y()
                 ComputeCordinatesForParticles(SetOfParticles)
                 ComputeAdaptationFunctionAndCostFunctionValues(SetOfParticles,cf.get_beta())
                 removedParticle=SetOfParticles.pop(IndexOfTheWorstParticle)
@@ -210,11 +205,13 @@ if __name__ == '__main__':
                     if SetOfParticles[IndexOfTheBestParticle].get_Z()<BestParticle.get_Z():
                         BestParticle=SetOfParticles[IndexOfTheBestParticle]
 
+                tableOfPoints.append(collectListOfPoints(SetOfParticles))
                 sys.stdout.write("\r Time:%4d, BestFitness:%8f\n" % (t, BestParticle.get_Z()))
                 t = t + 1
                 results.write('Xmin: {0}  Ymin: {1}  Zmin: {2}\n'.format(BestParticle.get_X(),BestParticle.get_Y(),BestParticle.get_Z()))
 
 
-    print('\nThe best minimum: {}\n'.format(BestParticle.get_Z()))
-    print('For X: {0} Y: {1}\n'.format(BestParticle.get_X(), BestParticle.get_Y()))
-    plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles)
+        print('\nThe best minimum: {}\n'.format(BestParticle.get_Z()))
+        print('For X: {0} Y: {1}\n'.format(BestParticle.get_X(), BestParticle.get_Y()))
+        CostFunctionGraph2D(Zmin,Zmax,IndexOfTheBestParticle,tableOfPoints,cf.get_totalTime())
+        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles,tableOfPoints)
