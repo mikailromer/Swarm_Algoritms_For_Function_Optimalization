@@ -1,6 +1,6 @@
 class FA_DataConfig:
-    __NumberOfFireflies=20 # Population Size
-    __Iteration = 1000
+    __NumberOfFireflies=4 # Population Size
+    __Iteration = 600
     __MaxGeneration = 1
     __Lambda=0.02
     __Beta0=1

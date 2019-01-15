@@ -32,3 +32,11 @@ def CostFunction(X, Y):
         #return np.exp(np.sin(-np.sqrt(X ** 2 + Y ** 2)))
         #return 1000*np.sin(X+np.log10(np.fabs(X)+0.00001))+X**2+Y**2
         return X ** 2 + Y ** 2
+
+def collectListOfPoints(SetOfObjects):
+    listOfPoints=[]
+    for i in range(len(SetOfObjects)):
+        listOfPoints.append(SetOfObjects[i].get_Point())
+
+    return listOfPoints
+

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from Objects.Firefly import Firefly
 from CommonFunctions.CommonFunctions import CostFunction,AtractivenessFunction
 from CommonFunctions.CommonFunctions import ComputeDistanceBeetweenTwoObjects
+from CommonFunctions.CommonFunctions import collectListOfPoints
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
 from Configs.ConfigDataForFaAlgorithm import FA_DataConfig as cf
@@ -47,14 +48,20 @@ def FindTheMostAtractiveFirefly(SwarmOfFireflies):
 
 
 
+
+
+
 if __name__ =='__main__':
     with open(path.join("results", "results.txt"), "w") as results:
         Best=None
         #Fireflies initialization
         SwarmOfFireflies=None
         Generation=0
+        tableOfPoints=[]
         for Generation in range(cf.get_numberOfGenerations()):
             SwarmOfFireflies = CreateSwarmOfFireflies(cf.get_NumberOfFireflies(), Xmin, Xmax, Ymin, Ymax, cf.get_beta0())
+            tableOfPoints.append(collectListOfPoints(SwarmOfFireflies))
+
             for iteration in range(cf.get_iteration()):
                 for i in range(cf.get_NumberOfFireflies()):
                     for j in range(cf.get_NumberOfFireflies()):
@@ -86,6 +93,7 @@ if __name__ =='__main__':
                 if SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].get_Z()<Best.get_Z():
                     Best=SwarmOfFireflies[IndexOfTheMostAtractiveFirefly]
 
+                tableOfPoints.append(collectListOfPoints(SwarmOfFireflies))
                 sys.stdout.write("\r Trial:%3d , Iteration:%4d, BestFitness:%.10f" % (Generation, iteration, SwarmOfFireflies[IndexOfTheMostAtractiveFirefly].get_Z()))
                 print('\n')
 
@@ -93,7 +101,7 @@ if __name__ =='__main__':
             Generation=Generation+1
 
 
-        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SwarmOfFireflies)
+        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SwarmOfFireflies,tableOfPoints)
         print('The best minimum: {}\n'.format(Best.get_Z()))
         print('For X: {0} Y: {1}\n'.format(Best.get_X(), Best.get_Y()))
 
