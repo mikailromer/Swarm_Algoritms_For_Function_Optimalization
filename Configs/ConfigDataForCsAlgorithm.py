@@ -6,8 +6,8 @@ class CS_DataConfig:
     __Pa = 0.25
     __Step_Size = 0.001
     __Dimension = 1 # The number of dimension
-    __Trial = 25
-    __Iteration = 100
+    __Trial = 1
+    __Iteration = 4000
 
     @classmethod
     def get_population_size(cls):

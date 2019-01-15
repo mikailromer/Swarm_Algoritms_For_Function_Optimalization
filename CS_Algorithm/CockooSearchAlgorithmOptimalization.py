@@ -72,19 +72,23 @@ def get_cuckoo(Cockoo):
     # Update position
     X=Cockoo.get_X()+step_size
     Y=Cockoo.get_Y()+step_size
-    Cockoo.set_Z(X,Y)
 
+    Cockoo.set_Point(X,Y)
     # Simple Boundary Rule
     if Cockoo.get_X() > Xmax:
+        raise Exception("cos")
         Cockoo.set_Point(Xmax, Cockoo.get_Y())
 
     if Cockoo.get_X() < Xmin:
+        raise Exception("coks")
         Cockoo.set_Point(Xmin, Cockoo.get_Y())
 
     if Cockoo.get_Y() > Ymax:
+        raise Exception("caaaos")
         Cockoo.set_Point(Cockoo.get_X(), Ymax)
 
     if Cockoo.get_Y() < Ymin:
+        raise Exception("aaassadcos")
         Cockoo.set_Point(Cockoo.get_X(), Ymin)
 
 
@@ -127,8 +131,6 @@ if __name__ == '__main__':
                 """Generate New Solutions"""
                 for i in range(len(SetOfCockoos)):
                     get_cuckoo(SetOfCockoos[i])
-                    SetOfCockoos[i].set_Z(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
-
                     """random choice (say j)"""
                     j = np.random.randint(low=0, high=cf.get_population_size())
                     while j == i: #random id[say j] ≠ i
@@ -138,7 +140,6 @@ if __name__ == '__main__':
                     if(SetOfCockoos[i].get_Z() < SetOfCockoos[j].get_Z()):
 
                         SetOfCockoos[j].set_Point(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
-                        SetOfCockoos[j].set_Z(SetOfCockoos[i].get_X(),SetOfCockoos[i].get_Y())
 
                 """Sort (to Keep Best)"""
                 SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
@@ -148,7 +149,6 @@ if __name__ == '__main__':
                 IndexesOfTheWorstSolutions=findTheWorstSolutions(SetOfCockoos,NumberOfTheWorstCockoos)
                 for a in IndexesOfTheWorstSolutions:
                     abandon(SetOfCockoos[a])
-                    SetOfCockoos[a].set_Z(SetOfCockoos[a].get_X(),SetOfCockoos[a].get_Y())
 
                 """Sort to Find the Best"""
                 SetOfCockoos = sorted(SetOfCockoos, key=lambda ID: ID.get_Z())
@@ -161,11 +161,11 @@ if __name__ == '__main__':
                     BestPositionInYaxis = SetOfCockoos[0].get_Y()
 
 
-                sys.stdout.write("\r Trial:%3d , Iteration:%7d, BestFitness:%.4f" %(trial , iteration, BestFitness))
+                sys.stdout.write("\r Iteration:%7d, BestFitness:%.4f" %( iteration, BestFitness))
+                results.write('Xmin: {0}  Ymin: {1}  Zmin: {2}\n'.format(BestPositionInXaxis,BestPositionInYaxis,BestFitness))
                 print('\n')
-                z=str(trial)
-            results.write('Trial: {0}  Xmin: {1}  Ymin: {2}  Zmin: {3}\n'.format(trial,BestPositionInXaxis,BestPositionInYaxis,BestFitness))
-        plot3DGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfCockoos)
+
         print('The best minimum: {}\n'.format(TheBestCockoo.get_Z()))
         print('For X: {0} Y: {1}\n'.format(TheBestCockoo.get_X(),TheBestCockoo.get_Y()))
+        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfCockoos)
 
