@@ -35,18 +35,18 @@ def plot3DGraph(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfObjects,TableOfPoints):
     plt.show()
     plt.close('all')
 
-def parsePointsTraceForObject(index,TableOfPoints, mode='XYZ'):
+def parsePointsTraceForObject(index,TableOfPoints, mode='XY'):
     PositionsOfObjectIn_Xaxis=[]
     PositionsOfObjectIn_Yaxis = []
     PositionsOfObjectIn_Zaxis = []
 
     for row in TableOfPoints:
-        if mode == 'XYZ':
+        if mode == 'XY':
             PositionsOfObjectIn_Xaxis.append(row[index]["X"])
             PositionsOfObjectIn_Yaxis.append(row[index]["Y"])
-
-        PositionsOfObjectIn_Zaxis.append(row[index]["Z"])
-    if mode!='XYZ':
+        elif mode=='Z':
+            PositionsOfObjectIn_Zaxis.append(row[index]["Z"])
+    if mode=='Z':
         return PositionsOfObjectIn_Zaxis
 
-    return PositionsOfObjectIn_Xaxis,PositionsOfObjectIn_Yaxis,PositionsOfObjectIn_Zaxis
+    return PositionsOfObjectIn_Xaxis,PositionsOfObjectIn_Yaxis

@@ -7,6 +7,7 @@ from mpl_toolkits.mplot3d import axes3d
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
 from PlotFunctions.CostFunctionGraph2D import CostFunctionGraph2D
+from PlotFunctions.ContourPlot import ContourPlot
 from CommonFunctions.CommonFunctions import collectListOfPoints
 from Configs.ConfigDataForGsaAlgorithm import GSA_DataConfig as cf
 from os import path,mkdir
@@ -214,4 +215,5 @@ if __name__ == '__main__':
         print('\nThe best minimum: {}\n'.format(BestParticle.get_Z()))
         print('For X: {0} Y: {1}\n'.format(BestParticle.get_X(), BestParticle.get_Y()))
         CostFunctionGraph2D(Zmin,Zmax,IndexOfTheBestParticle,tableOfPoints,cf.get_totalTime())
-        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles,tableOfPoints)
+        ContourPlot(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SetOfParticles,tableOfPoints)
+        #plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SetOfParticles,tableOfPoints)

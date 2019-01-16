@@ -6,6 +6,7 @@ from CommonFunctions.CommonFunctions import collectListOfPoints
 from PlotFunctions.Plot3DGraph import plot3DGraph
 from PlotFunctions.DataForPlot import *
 from PlotFunctions.CostFunctionGraph2D import CostFunctionGraph2D
+from PlotFunctions.ContourPlot import ContourPlot
 from Configs.ConfigDataForFaAlgorithm import FA_DataConfig as cf
 from os import path,mkdir
 import sys
@@ -101,7 +102,9 @@ if __name__ =='__main__':
             Generation=Generation+1
 
         CostFunctionGraph2D(Zmin,Zmax,IndexOfTheMostAtractiveFirefly,tableOfPoints,cf.get_iteration())
-        plot3DGraph(Xmin, Xmax, Ymin, Ymax, Zmin, Zmax, SwarmOfFireflies,tableOfPoints)
+        ContourPlot(Xmin,Xmax,Ymin,Ymax,Zmin,Zmax,SwarmOfFireflies,tableOfPoints)
+    
+
         print('The best minimum: {}\n'.format(Best.get_Z()))
         print('For X: {0} Y: {1}\n'.format(Best.get_X(), Best.get_Y()))
 
